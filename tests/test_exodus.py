@@ -1,3 +1,4 @@
+import numpy as np
 import pytest
 
 import meshio
@@ -8,6 +9,7 @@ netCDF4 = pytest.importorskip("netCDF4")
 
 test_set = [
     helpers.empty_mesh,
+    helpers.line_mesh,
     helpers.tri_mesh,
     helpers.tri_mesh_2d,
     helpers.triangle6_mesh,
@@ -35,3 +37,15 @@ def test_generic_io(tmp_path):
     helpers.generic_io(tmp_path / "test.e")
     # With additional, insignificant suffix:
     helpers.generic_io(tmp_path / "test.0.e")
+
+
+def test_cell_set_names(tmp_path):
+    mesh = helpers.add_cell_set_names(helpers.line_mesh, ["block"])
+    helpers.write_read(tmp_path, meshio.exodus.write, meshio.exodus.read, mesh, 1.0e-15)
+
+
+def test_face_sets(tmp_path):
+    side_sets = [(101, np.array([[0, 0]])), (102, np.array([[1, 1]]))]
+    mesh = helpers.add_face_sets(helpers.line_mesh, side_sets)
+    mesh = helpers.add_face_set_names(mesh, ["left", "right"])
+    helpers.write_read(tmp_path, meshio.exodus.write, meshio.exodus.read, mesh, 1.0e-15)
