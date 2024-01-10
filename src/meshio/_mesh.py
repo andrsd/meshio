@@ -122,6 +122,7 @@ class Mesh:
         cell_data: dict[str, list[ArrayLike]] | None = None,
         field_data=None,
         point_sets: dict[str, ArrayLike] | None = None,
+        face_sets: dict[str, list[ArrayLike]] | None = None,
         cell_sets: dict[str, list[ArrayLike]] | None = None,
         gmsh_periodic=None,
         info=None,
@@ -155,9 +156,12 @@ class Mesh:
         self.cell_data = {} if cell_data is None else cell_data
         self.field_data = {} if field_data is None else field_data
         self.point_sets = {} if point_sets is None else point_sets
+        self.face_sets = {} if face_sets is None else face_sets
         self.cell_sets = {} if cell_sets is None else cell_sets
         self.gmsh_periodic = gmsh_periodic
         self.info = info
+        self.cell_set_names = []
+        self.face_set_names = []
 
         # assert point data consistency and convert to numpy arrays
         for key, item in self.point_data.items():
@@ -212,6 +216,11 @@ class Mesh:
         if self.point_sets:
             names = ", ".join(self.point_sets.keys())
             lines.append(f"  Point sets: {names}")
+
+        if self.face_sets:
+            face_set_names = [str(v[0]) for i, v in enumerate(self.face_sets)]
+            names = ", ".join(face_set_names)
+            lines.append(f"  Face sets: {names}")
 
         if self.cell_sets:
             names = ", ".join(self.cell_sets.keys())

@@ -651,6 +651,24 @@ def add_cell_sets(mesh):
     return mesh2
 
 
+def add_cell_set_names(mesh, names):
+    mesh2 = copy.deepcopy(mesh)
+    mesh2.cell_set_names = names
+    return mesh2
+
+
+def add_face_sets(mesh, face_sets):
+    mesh2 = copy.deepcopy(mesh)
+    mesh2.face_sets = face_sets
+    return mesh2
+
+
+def add_face_set_names(mesh, names):
+    mesh2 = copy.deepcopy(mesh)
+    mesh2.face_set_names = names
+    return mesh2
+
+
 def write_read(tmp_path, writer, reader, input_mesh, atol, extension=".dat"):
     """Write and read a file, and make sure the data is the same as before."""
     in_mesh = copy.deepcopy(input_mesh)
