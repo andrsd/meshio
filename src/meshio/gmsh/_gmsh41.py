@@ -2,6 +2,7 @@
 I/O for Gmsh's msh format (version 4.1, as used by Gmsh 4.2.2+), cf.
 <http://gmsh.info/doc/texinfo/gmsh.html#MSH-file-format>.
 """
+
 from functools import partial
 
 import numpy as np
@@ -209,13 +210,15 @@ def _read_elements(
         (num_ele,) = fromfile(f, c_size_t, 1)
         for physical_name, cell_set in cell_sets.items():
             cell_set[k] = np.arange(
-                num_ele
-                if (
-                    physical_tags
-                    and field_data[physical_name][1] == dim
-                    and field_data[physical_name][0] in physical_tags[dim][tag]
-                )
-                else 0,
+                (
+                    num_ele
+                    if (
+                        physical_tags
+                        and field_data[physical_name][1] == dim
+                        and field_data[physical_name][0] in physical_tags[dim][tag]
+                    )
+                    else 0
+                ),
                 dtype=type(num_ele),
             )
         tpe = _gmsh_to_meshio_type[type_ele]
@@ -250,7 +253,9 @@ def _read_elements(
         cells.append(CellBlock(key, _gmsh_to_meshio_order(key, values)))
         if physical_tag or physical_tag == []:
             if physical_tag == []:
-                physical_tag = [-999999999] # The number seems not be used actually as physical name number. (and as per 32bit-int min -2147483648) 
+                physical_tag = [
+                    -999999999
+                ]  # The number seems not be used actually as physical name number. (and as per 32bit-int min -2147483648)
             if "gmsh:physical" not in cell_data:
                 cell_data["gmsh:physical"] = []
             cell_data["gmsh:physical"].append(

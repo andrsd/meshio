@@ -3,6 +3,7 @@ I/O for VTU.
 <https://vtk.org/Wiki/VTK_XML_Formats>
 <https://vtk.org/wp-content/uploads/2015/04/file-formats.pdf>
 """
+
 import base64
 import re
 import sys
@@ -908,7 +909,7 @@ def write(filename, mesh, binary=True, compression="zlib", header_type=None):
         cd = ET.SubElement(piece, "CellData")
         for name, data in raw_from_cell_data(mesh.cell_data).items():
             numpy_to_xml_array(cd, name, data)
-            
+
     if mesh.field_data:
         fd = ET.SubElement(grid, "FieldData")
         for name, data in mesh.field_data.items():

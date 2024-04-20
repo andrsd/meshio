@@ -1,6 +1,7 @@
 """
 I/O for Abaqus inp files.
 """
+
 import pathlib
 from itertools import count
 
@@ -421,9 +422,7 @@ def write(
             for row in node_idcs:
                 eid += 1
                 eid_nids_strs = [str(eid)]
-                eid_nids_strs.extend(
-                    str(nid + 1) for nid in row.tolist()
-                )
+                eid_nids_strs.extend(str(nid + 1) for nid in row.tolist())
                 f.write(
                     ",\n".join(
                         ",".join(eid_nids_strs[i : i + nnl])
