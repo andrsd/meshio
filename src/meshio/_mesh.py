@@ -190,6 +190,10 @@ class Mesh:
                         + f"corresponding cell data item has length {len(data[k])}."
                     )
 
+        # convert face sets to numpy arrays
+        for idx, fset in enumerate(self.face_sets):
+            self.face_sets[idx] = [fset[0], np.asarray(fset[1])]
+
     def __repr__(self):
         lines = ["<meshio mesh object>", f"  Number of points: {len(self.points)}"]
         special_cells = [
