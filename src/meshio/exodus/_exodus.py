@@ -329,7 +329,7 @@ def _write_cells(mesh, rootgrp):
     # cells
     data = rootgrp.createVariable("eb_prop1", "i4", "num_el_blk")
     for k in range(len(mesh.cells)):
-        data[k] = k
+        data[k] = k + 1
     for k, cell_block in enumerate(mesh.cells):
         dim1 = f"num_el_in_blk{k + 1}"
         dim2 = f"num_nod_per_el{k + 1}"
